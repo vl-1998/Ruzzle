@@ -2,6 +2,7 @@ package it.polito.tdp.ruzzle;
 
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -18,6 +19,8 @@ public class FXMLController {
 
 	private Model model ; 
 	
+	//MAPPA, la matrice è un insieme di bottoni, ogni bottone è una cella della scacchiera, quindi nella matrice
+	//ho bisogno di un mapping tra ogni bottone e la corrispondente posizione nella scacchiera
 	//corrispondenza bottoni dell'interfaccia grafica <-> caselle della Board 
 	private Map<Pos,Button> letters ;
 	
@@ -90,7 +93,40 @@ public class FXMLController {
 
     @FXML
     void handleProva(ActionEvent event) {
-
+    	//refresh dell'interfaccia grafica, tolgo il percorso illuminato
+    	for (Button b: letters.values()) {
+    		b.setDefaultButton(false);
+    	}
+    	
+    	String parola = txtParola.getText();
+    	parola = parola.toUpperCase();
+    	
+    	//controllo degli errori 
+    	//1. le parole valide devono essere di almeno 2 caratteri
+    	if (parola.length()<= 1) {
+    		txtResult.setText("Devi inserire parole di almeno 2 lettere!!");
+    		return;
+    	}
+    	//2. solo caratteri alfabetici
+    	if (!parola.matches("[A-Z]+")) { //se la parola non è composta da soli caratteri (con il + perche si possono ripetere)
+    		txtResult.setText("Devi inserire solo caratteri alfabetici!!");
+    		return;
+    	}
+    	
+    	//se facessi un programma per l'utente e non un programma che si risolva da solo, potrei far controllare qui che la parola
+    	//sia presente nel dizionario, ma io lo faccio dopo
+    	
+    	List <Pos> percorso = model.trovaParola(parola);
+    	
+    	if (percorso != null) {
+    		//coloro i bottoni corrispondenti alle posizioni del corso che ho trovato
+    		//per recuperare i bottoni ho la mappa letters
+    		for (Pos p: percorso) {
+    			letters.get(p).setDefaultButton(true);
+    		}
+    	} else {
+    		txtResult.setText("Parola non trovata!");
+    	}
     }
 
     @FXML
@@ -98,8 +134,16 @@ public class FXMLController {
     	model.reset();
     }
     
+    //PROVA tutte le parole presenti nel dizionario per vedere se sono presenti nella matrice
     @FXML
     void handleRisolvi(ActionEvent event) {
+    	List <String> tutte = model.trovaTutte();
+    	
+    	txtResult.clear();
+    	txtResult.appendText(String.format("Ho trovato %d soluzioni \n", tutte.size()));
+    	for (String s: tutte) {
+    		txtResult.appendText(s+"\n");
+    	}
 
     }
 
@@ -128,11 +172,13 @@ public class FXMLController {
 
     }
     
+    //METODO per il settaggio del model
     public void setModel(Model m) {
     	this.model = m ;
     	
     	this.letters = new HashMap<>() ;
     	
+    	//Inseriamo per ogni posizione valida il riferimento corretto del bottone
     	this.letters.put(new Pos(0,0), let00) ;
     	this.letters.put(new Pos(0,1), let01) ;
     	this.letters.put(new Pos(0,2), let02) ;
@@ -153,8 +199,11 @@ public class FXMLController {
     	this.letters.put(new Pos(3,2), let32) ;
     	this.letters.put(new Pos(3,3), let33) ;
 
+    	//BINDING 
+    	//Per ogni bottone della nostra mappa appena creata, andiamo a prendere la TEXTPROPERTY del bottone(esiste in java FX)
+    	//e andiamo a fare il binding con la string property di ogni casella nella classe board
     	for(Pos cell: m.getBoard().getPositions()) {
-    		this.letters.get(cell).textProperty().bind(m.getBoard().getCellValueProperty(cell));
+    		this.letters.get(cell).textProperty().bind(m.getBoard().getCellValueProperty(cell)); 
     	}
     	
     	this.txtStatus.textProperty().bind(m.statusTextProperty());

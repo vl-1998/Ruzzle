@@ -1,11 +1,12 @@
 package it.polito.tdp.ruzzle.db;
 
-import java.sql.Connection;
+import java.sql.Connection; 
 import java.sql.SQLException;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
+//CONNESSIONE al database con il connection pooling
 public class DBConnect {
 	private static final String jdbcURL = "jdbc:mysql://localhost/dizionario";
 	private static HikariDataSource ds;
@@ -15,7 +16,7 @@ public class DBConnect {
 			HikariConfig config = new HikariConfig();
 			config.setJdbcUrl(jdbcURL);
 			config.setUsername("root");
-			config.setPassword("rootroot");
+			config.setPassword("Vale1998Giammy");
 			
 			config.addDataSourceProperty("cachePrepStmts", true);
 			config.addDataSourceProperty("prepStmtChacheSize", 250);

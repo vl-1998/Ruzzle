@@ -1,5 +1,6 @@
 package it.polito.tdp.ruzzle.model;
 
+//qui parliamo di una matrice bisdimensionale, quindi abbiamo bisogno di un indice riga e uno colonna
 /**
  * Classe che indentifica la posizione di una casella del gioco
  * 
@@ -35,6 +36,8 @@ public class Pos {
 		return String.format("[%s,%s]", row, col);
 	}
 
+	
+	//le istanze di questa classe sono uguali se la riga e la colonna sono uguali
 	@Override
 	public int hashCode() {
 		final int prime = 31;

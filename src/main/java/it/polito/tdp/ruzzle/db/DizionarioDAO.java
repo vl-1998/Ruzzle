@@ -9,6 +9,7 @@ import java.util.List;
 
 public class DizionarioDAO {
 	
+	//da qui controllo se le parole estratte dalla matrice sono presenti nel dizionario
 	/**
 	 * Ritorna tutte le parole presenti nel dizionario
 	 * 

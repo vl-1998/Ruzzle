@@ -1,0 +1,72 @@
+Possiamo immaginarci 2 modi di risolvere il problema.
+
+1°APPROCCIO (VISTO ORA)
+Risolvere il problema potrebbe voler dire se una determinata parola che ci inventiamo noi faccia parte della
+nostra griglia. Dal momento che sono capace di capire se una parola è presente nella griglia so quali 
+sono le parole valide, quelle PRESENTI nel dizionario. 
+La ricorsione è capire se la parola è presente o no nella griglia e poi applico il processo ricorsivo per
+tutte le parole del dizionario.
+
+2°APPROCCIO
+Provare tutti i possibili percorsi sulla griglia di ruzzle. Per ogni lettera mi chiedo se esistono parole che 
+iniziano con la lettera e la coppia di lettere (la prima scelta e una delle adiacenti). Se non esistono faccio
+backtracking e cambio coppia o singola lettera da cui partire.
+
+Problema:
+	INPUT: String da riconoscere 'parola'.
+		   Contenuto della Board.
+		   Ricercare la prima lettera fuori dal processo ricorsivo, in modo da partire dal punto in cui è 
+		   presente quella lettera e se non presente non iniziare neanche la ricorsione (posizione della
+		   lettera iniziale).
+		   
+Soluzione parziale:
+	Parte iniziale della parola già riconosciuta (ESEMPIO: pippo, PARZIALE: p al 1° giro, pi al 2° giro).
+	Elenco delle posizioni in cui si trovano le lettere già riconosciute, sia per visualizzare a posteriori 
+	parole sulla matrice, sia perchè non si possono riutilizzare le stesse lettere (ESEMPIO pippo, ho bisogno
+	di 3 "p").
+
+Soluzione totale:
+	Parola completamente riconosciuta.
+	Elenco di posizioni che servono per comporre la parola completa.
+
+Livello: 
+	Numero di caratteri gia riconosciuti. 
+	
+Condizione di terminazione:
+	Quando il livello raggiunge la lunghezza della parola. livello=lunghezza parola.
+	NON E' UN PROBLEMA DI OTTIMIZZAZIONE, se viene trovata la soluzione mi fermo.
+	
+Generazioen delle soluzioni: 
+	- Trovare tutte le posizioni che siano adiacenti all'ultima posizione usata;
+	- Contenenti la lettera corrette;
+	- Non ancora utilizzate. 
+
+Avvio della ricorsione:
+	Livello = 1, perchè la soluzione parziale sara gia riempita con il carattere della prima lettera da ricercare
+
+Strutture dati: 
+	- Stringa per memorizzare la parola;
+	- Livello;
+	- List <Pos> 'percorso' corrispondente alla sequenza di caselle.
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
